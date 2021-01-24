@@ -1,4 +1,4 @@
-package site.camila.gerenciador.servlet;
+package site.camila.gerenciador.modelo;
 
 import java.util.ArrayList;
 import java.util.Iterator;
