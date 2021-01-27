@@ -13,6 +13,7 @@ import site.camila.gerenciador.acao.AlteraEmpresa;
 import site.camila.gerenciador.acao.ListaEmpresas;
 import site.camila.gerenciador.acao.MostraEmpresa;
 import site.camila.gerenciador.acao.NovaEmpresa;
+import site.camila.gerenciador.acao.NovaEmpresaForm;
 import site.camila.gerenciador.acao.RemoveEmpresa;
 
 @WebServlet("/entrada")
@@ -33,18 +34,21 @@ public class UnicaEntradaServlet extends HttpServlet {
 			nome = acao.executa(request, response);
 		} else if (paramAcao.equals("MostraEmpresa")) {
 			MostraEmpresa acao = new MostraEmpresa();
-			// nome = acao.executa(request, response);
+			nome = acao.executa(request, response);
 		} else if (paramAcao.equals("AlteraEmpresa")) {
 			AlteraEmpresa acao = new AlteraEmpresa();
-			// nome = acao.executa(request, response);
+			nome = acao.executa(request, response);
 		} else if (paramAcao.equals("NovaEmpresa")) {
 			NovaEmpresa acao = new NovaEmpresa();
-			// nome = acao.executa(request, response);
+			nome = acao.executa(request, response);
+		} else if (paramAcao.equals("NovaEmpresaForm")) {
+			NovaEmpresaForm acao = new NovaEmpresaForm();
+			nome = acao.executa(request, response);
 		}
 
 		String[] tipoEEndereco = nome.split(":");
 		if (tipoEEndereco[0].equals("forward")) {
-			RequestDispatcher rd = request.getRequestDispatcher(tipoEEndereco[1]);
+			RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/view/" + tipoEEndereco[1]);
 			rd.forward(request, response);
 		} else {
 			response.sendRedirect(tipoEEndereco[1]);

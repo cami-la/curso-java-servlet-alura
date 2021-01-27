@@ -12,7 +12,7 @@ import site.camila.gerenciador.modelo.Empresa;
 
 public class MostraEmpresa {
 
-	public void executa(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public String executa(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("mostrando dados da empresa");
 
 		String parameterId = request.getParameter("id");
@@ -27,9 +27,7 @@ public class MostraEmpresa {
 
 		// chamar um JSP
 		request.setAttribute("empresa", empresa);
-
-		RequestDispatcher rd = request.getRequestDispatcher("/formAlteraEmpresa.jsp");
-		rd.forward(request, response);
-
+		
+		return "forward:formAlteraEmpresa.jsp";
 	}
 }

@@ -14,7 +14,7 @@ import site.camila.gerenciador.modelo.Empresa;
 
 public class AlteraEmpresa {
 
-	public void executa(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public String executa(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String nome = request.getParameter("nome");
 
@@ -37,8 +37,8 @@ public class AlteraEmpresa {
 		Empresa empresa = banco.buscaEmpresaPelaId(id);
 		empresa.setNome(nome);
 		empresa.setDataAbertura(dataAbertura);
-
-		response.sendRedirect("entrada?acao=ListaEmpresas");
+		
+		return "redirect:entrada?acao=ListaEmpresas";
 
 	}
 }
