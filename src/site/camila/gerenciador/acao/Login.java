@@ -20,7 +20,16 @@ public class Login implements Acao {
 		String senha = request.getParameter("senha");
 		System.out.println("Logando " + login);
 		
-		return "redirect:entrada?acao=ListaEmpresas";
+		Banco banco = new Banco();
+		Usuario usuario = banco.existeUsuario(login, senha);
+		
+		if (usuario != null) {
+			System.out.println("Usuario Existe!");
+			return "redirect:entrada?acao=ListaEmpresas";
+		} else {
+			return "redirect:entrada?acao=LoginForm";
+		}
+		
 	}
 
 }

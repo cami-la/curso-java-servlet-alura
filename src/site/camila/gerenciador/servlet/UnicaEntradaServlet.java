@@ -67,5 +67,4 @@ public class UnicaEntradaServlet extends HttpServlet {
 			response.sendRedirect(tipoEEndereco[1]);
 		}
 	}
-
 }
