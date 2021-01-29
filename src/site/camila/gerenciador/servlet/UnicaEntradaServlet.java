@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import site.camila.gerenciador.acao.Acao;
 import site.camila.gerenciador.acao.AlteraEmpresa;
@@ -25,18 +26,27 @@ public class UnicaEntradaServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		String paramAcao = request.getParameter("acao");
+
+		HttpSession sessao = request.getSession();
+		boolean usuarioNaoEstaLogado = sessao.getAttribute("usuarioLogado") == null;
+		boolean ehUmaAcaoProtegida = !(paramAcao.equals("LoginForm") || paramAcao.equals("Login"));
 		
+		if (ehUmaAcaoProtegida && usuarioNaoEstaLogado) {
+			response.sendRedirect("entrada?acao=LoginForm");
+			return;
+		}
+
 		String nomeDaClasse = "site.camila.gerenciador.acao." + paramAcao;
-		
+
 		String nome;
 
-			try {
-				Class classe = Class.forName(nomeDaClasse); //carrega a classe com o nome da String.
-				Acao acao = (Acao) classe.newInstance();
-				nome = acao.executa(request, response);
-			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-				throw new ServletException(e);
-			}
+		try {
+			Class classe = Class.forName(nomeDaClasse); // carrega a classe com o nome da String.
+			Acao acao = (Acao) classe.newInstance();
+			nome = acao.executa(request, response);
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			throw new ServletException(e);
+		}
 
 //		String nome = null;
 //		if (paramAcao.equals("ListaEmpresas")) {
