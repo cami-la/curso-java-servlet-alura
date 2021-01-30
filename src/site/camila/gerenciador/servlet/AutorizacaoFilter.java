@@ -11,32 +11,39 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+/**
+ * Servlet Filter implementation class AutorizacaoFilter
+ */
 //@WebFilter("/entrada")
-public class MonitoramentoFilter implements Filter {
+public class AutorizacaoFilter implements Filter {
 
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
 		
-		System.out.println("MonitoramentoFilter");
+		System.out.println("Autorização Filter");
 		
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
 		
 		String paramAcao = request.getParameter("acao");
 		
-		long antes = System.currentTimeMillis();
+		HttpSession sessao = request.getSession();
+		boolean usuarioNaoEstaLogado = sessao.getAttribute("usuarioLogado") == null;
+		boolean ehUmaAcaoProtegida = !(paramAcao.equals("LoginForm") || paramAcao.equals("Login"));
 		
-		chain.doFilter(request, response);
+		if (ehUmaAcaoProtegida && usuarioNaoEstaLogado) {
+			response.sendRedirect("entrada?acao=LoginForm");
+			return;
+		}
 
-		long depois = System.currentTimeMillis();
-		
-		System.out.println("Tempo de execução da ação " + paramAcao + " -> " + (depois - antes));
+		chain.doFilter(request, response);
 	}
 
 	public void init(FilterConfig fConfig) throws ServletException {
 		// TODO Auto-generated method stub
 	}
-	
+
 	public void destroy() {
 		// TODO Auto-generated method stub
 	}
