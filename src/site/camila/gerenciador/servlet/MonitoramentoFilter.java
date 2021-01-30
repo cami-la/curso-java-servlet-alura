@@ -9,36 +9,33 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-//@WebFilter(urlPatterns="/entrada")
+@WebFilter("/entrada")
 public class MonitoramentoFilter implements Filter {
 
-	@Override
-	public void destroy() {
-
-	}
-
-	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
-
-		System.out.println("MonitoramentoFilter");
-
+	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
+		
+		HttpServletRequest request = (HttpServletRequest) servletRequest;
+		HttpServletResponse response = (HttpServletResponse) servletResponse;
+		
+		String paramAcao = request.getParameter("acao");
+		
 		long antes = System.currentTimeMillis();
-		String acao = request.getParameter("acao");
 		
-		//executa a ação
 		chain.doFilter(request, response);
-		
+
 		long depois = System.currentTimeMillis();
-
-		System.out.println("Tempo de execução da ação " + acao + " -> " +(depois - antes));
-
+		
+		System.out.println("Tempo de execução da ação " + paramAcao + " -> " + (depois - antes));
 	}
 
-	@Override
-	public void init(FilterConfig arg0) throws ServletException {
-
+	public void init(FilterConfig fConfig) throws ServletException {
+		// TODO Auto-generated method stub
 	}
-
+	
+	public void destroy() {
+		// TODO Auto-generated method stub
+	}
 }
